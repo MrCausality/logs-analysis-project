@@ -1,4 +1,4 @@
-#SUMMARY
+# SUMMARY
 This logs analysis project is an exercise in building PostgreSQL queries on a database with over a million records.
 It searches for 3 particular sets of data (seen below) and returns in nicely formatted, email-friendly tables.
 
@@ -8,19 +8,19 @@ It searches for 3 particular sets of data (seen below) and returns in nicely for
     <li>On which days did more than 1% of page requests lead to errors?</li>
 </ul>
 
-#REQUIREMENTS
+# REQUIREMENTS
 <ul>
     <li>Python 3</li>
     <li><a href="http://initd.org/psycopg/">psycopg2</a></li>
 </ul>
 
-#INSTRUCTIONS
+# INSTRUCTIONS
 Place the main.py script in the same directory as the newsdata.sql database.  Create all views listed below, as they are
 necessary for the python script.  Execute python script from console to view output of program.
 
 
-#VIEWS
-##art_views
+# VIEWS
+## art_views
 All articles, total views.
 
     CREATE VIEW art_views AS
@@ -32,7 +32,7 @@ All articles, total views.
     GROUP BY path
     ORDER BY views DESC;
 
-##top3
+## top3
 Top 3 viewed articles.
 
     CREATE VIEW top3 AS
@@ -47,7 +47,7 @@ Top 3 viewed articles.
     ORDER BY COUNT DESC
     LIMIT 3;
 
-##succ_view_date
+## succ_view_date
 Total successful page views by date.
 
     CREATE VIEW succ_view_date AS
@@ -58,7 +58,7 @@ Total successful page views by date.
     GROUP BY date
     ORDER BY date DESC;
 
-##fail_view_date
+## fail_view_date
 Total failed pages requests by date.
 
     CREATE VIEW fail_view_date
@@ -69,7 +69,7 @@ Total failed pages requests by date.
     GROUP BY date
     ORDER BY date DESC;
 
-##error
+## error
 Error rate by date.
 
     CREATE VIEW error AS
@@ -79,7 +79,7 @@ Error rate by date.
     JOIN fail_view_date ON succ_view_date.date = fail_view_date.date
     ORDER BY date DESC;
     
-#RESOURCES
+# RESOURCES
 <ul>
     <li>SQL DB provided by Udacity
     <li>Table output code adapted from 
