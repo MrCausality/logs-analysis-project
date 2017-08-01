@@ -52,7 +52,7 @@ SELECT path,
        count(*),
        title
 FROM articles
-JOIN log ON log.path LIKE CONCAT('%',articles.slug,'%')
+JOIN log ON log.path = '/article/' || articles.slug
 WHERE status LIKE '%200%'
 GROUP BY path,
          title
