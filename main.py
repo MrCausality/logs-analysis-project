@@ -32,48 +32,54 @@ def printtable(cursor):
         tavnit += " %-"+"%ss |" % (w,)
         separator += "-"*w + "--+"
 
-    print(separator)
-    print(tavnit % tuple(columns))
-    print(separator)
+    r = ""
+    r += separator + "\n"
+    r += (tavnit % tuple(columns)) + "\n"
+    r += separator + "\n"
     for row in results:
-        print(tavnit % row)
-    print(separator)
-    print("")
+        r += (tavnit % row) + "\n"
+    r += separator + "\n"
+    r += ""
+    return r
+
+
+def execute_query(query):
+    """execute_query takes an SQL query as a parameter.
+       Executes the query and returns the results as a list of tuples.
+      args:
+          query - an SQL query statement to be executed.
+
+      returns:
+          A list of tuples containing the results of the query.
+   """
+    try:
+        db = psycopg2.connect("dbname=news")
+        c = db.cursor()
+        c.execute(query)
+        results = printtable(c)
+        db.close
+        return results
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
 
 
 def get_top3():
-    """Return top 3 articles by successful views."""
-    db = psycopg2.connect("dbname=news")
-    c = db.cursor()
-    c.execute("SELECT ROW_NUMBER() OVER () AS rank, title, count AS views "
-              "FROM top3;")
-    print("Top Viewed Articles:")
-    printtable(c)
-    db.close
+    query = "SELECT ROW_NUMBER() OVER () AS rank, title, count AS views " \
+            "FROM top3;"
+    print("Top Viewed Articles\n" + execute_query(query))
 
 
 def get_top_authors():
-    """Return authors ranked by total successful views."""
-    db = psycopg2.connect("dbname=news")
-    c = db.cursor()
-    c.execute("SELECT authors.name, SUM(views) AS total_views FROM art_views "
-              "JOIN articles ON path LIKE CONCAT('%',slug,'%') "
-              "JOIN authors ON articles.author = authors.id "
-              "GROUP BY authors.name ORDER BY total_views DESC;")
-    print("Top Authors by Total Views:")
-    printtable(c)
-    db.close
+    query = "SELECT authors.name, SUM(views) AS total_views FROM art_views " \
+            "JOIN articles ON path LIKE CONCAT('%',slug,'%') " \
+            "JOIN authors ON articles.author = authors.id " \
+            "GROUP BY authors.name ORDER BY total_views DESC;"
+    print("Top Authors by Total Views \n" + execute_query(query))
 
 
 def get_error_rate():
-    """Return days where page request error rate exceeded one percent."""
-    db = psycopg2.connect("dbname=news")
-    c = db.cursor()
-    c.execute("SELECT * FROM error WHERE percent_error > 1;")
-    print("Days with greater than 1% Page Request Error Rate:")
-    printtable(c)
-    db.close
-
+    query = "SELECT * FROM error WHERE percent_error > 1;"
+    print("Days With Greater Than 1% Page Request Error Rate\n" + execute_query(query))
 
 get_top3()
 get_top_authors()
