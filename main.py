@@ -64,12 +64,14 @@ def execute_query(query):
 
 
 def get_top3():
+    """Return top 3 articles by successful views."""
     query = """SELECT ROW_NUMBER() OVER () AS rank, title, count AS views
             FROM top3;"""
     print("Top Viewed Articles\n" + execute_query(query))
 
 
 def get_top_authors():
+    """Return authors ranked by total successful views."""
     query = """SELECT authors.name, SUM(views) AS total_views FROM art_views
             JOIN articles ON path LIKE CONCAT('%',slug,'%')
             JOIN authors ON articles.author = authors.id 
@@ -78,9 +80,12 @@ def get_top_authors():
 
 
 def get_error_rate():
+    """Return days where page request error rate exceeded one percent."""
     query = "SELECT * FROM error WHERE percent_error > 1;"
     print("Days With Greater Than 1% Page Request Error Rate\n" + execute_query(query))
 
-get_top3()
-get_top_authors()
-get_error_rate()
+
+if __name__ == '__main__':
+    get_top3()
+    get_top_authors()
+    get_error_rate()
