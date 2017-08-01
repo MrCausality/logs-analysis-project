@@ -74,7 +74,7 @@ def get_top_authors():
     """Return authors ranked by total successful views."""
     query = """SELECT authors.name, SUM(views) AS total_views FROM art_views
             JOIN articles ON path LIKE CONCAT('%',slug,'%')
-            JOIN authors ON articles.author = authors.id 
+            JOIN authors ON articles.author = authors.id
             GROUP BY authors.name ORDER BY total_views DESC;"""
     print("Top Authors by Total Views\n" + execute_query(query))
 
@@ -82,7 +82,7 @@ def get_top_authors():
 def get_error_rate():
     """Return days where page request error rate exceeded one percent."""
     query = "SELECT * FROM error WHERE percent_error > 1;"
-    print("Days With Greater Than 1% Page Request Error Rate\n" + execute_query(query))
+    print("Days With > 1% Page Request Error Rate\n" + execute_query(query))
 
 
 if __name__ == '__main__':
