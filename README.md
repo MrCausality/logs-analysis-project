@@ -16,18 +16,16 @@ Demonstrated are 3 sample sets of data:
 - [PostgreSQL v9.5.7](https://www.postgresql.org/download/)
 
 # INSTRUCTIONS
+
 - Download and setup the news database
     - Download and extract the 
-[newsdata.sql database](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
-    - CD to directory with the SQL file and create the news database
-     with command "psql -d news -f newsdata.sql"
-    - Once db is created, connect with "psql -d news", and view schema using "\dt" and "\d [table name]"
-- Create necessary views
-    - Run all sql view statements in the order found in "VIEWS" section of this readme.
+[newsdata.sql database](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip) to the
+same directory as "main.py" and "setup_database.sql"
+    - Setup news database, import schema, and create views by running command "psql -f setup_database.sql"
     
 - Execute Python script to retrieve data
-    - Place the main.py script in the same directory as the newsdata.sql database.
-    - From console, while in directory, use command "python main.py" to display results of queries
+    - Confirm the main.py script is in the same directory as the newsdata.sql database.
+    - From console, use command "python main.py" to display results of queries
 
 
 # VIEWS
