@@ -64,17 +64,17 @@ def execute_query(query):
 
 
 def get_top3():
-    query = "SELECT ROW_NUMBER() OVER () AS rank, title, count AS views " \
-            "FROM top3;"
+    query = """SELECT ROW_NUMBER() OVER () AS rank, title, count AS views
+            FROM top3;"""
     print("Top Viewed Articles\n" + execute_query(query))
 
 
 def get_top_authors():
-    query = "SELECT authors.name, SUM(views) AS total_views FROM art_views " \
-            "JOIN articles ON path LIKE CONCAT('%',slug,'%') " \
-            "JOIN authors ON articles.author = authors.id " \
-            "GROUP BY authors.name ORDER BY total_views DESC;"
-    print("Top Authors by Total Views \n" + execute_query(query))
+    query = """SELECT authors.name, SUM(views) AS total_views FROM art_views
+            JOIN articles ON path LIKE CONCAT('%',slug,'%')
+            JOIN authors ON articles.author = authors.id 
+            GROUP BY authors.name ORDER BY total_views DESC;"""
+    print("Top Authors by Total Views\n" + execute_query(query))
 
 
 def get_error_rate():
