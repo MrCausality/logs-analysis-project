@@ -46,6 +46,17 @@ Top 3 viewed articles.
              title
     ORDER BY COUNT DESC
     LIMIT 3;
+    
+## total_view_date
+Total page view requests by date.
+
+    CREATE VIEW total_view_date AS
+    SELECT TO_CHAR(TIME, 'YYYY-MM-DD') AS date,
+            count(*) AS total_views
+    FROM log
+    WHERE status LIKE '%%'
+    GROUP BY date
+    ORDER BY date DESC;
 
 ## succ_view_date
 Total successful page views by date.
@@ -61,7 +72,7 @@ Total successful page views by date.
 ## fail_view_date
 Total failed pages requests by date.
 
-    CREATE VIEW fail_view_date
+    CREATE VIEW fail_view_date AS
     SELECT TO_CHAR(TIME, 'YYYY-MM-DD') AS date,
            count(*) AS failures
     FROM log
@@ -73,10 +84,10 @@ Total failed pages requests by date.
 Error rate by date.
 
     CREATE VIEW error AS
-    SELECT succ_view_date.date,
-           cast(100 * cast(failures AS decimal) / cast(successes AS decimal) AS decimal(16,2)) AS percent_error
-    FROM succ_view_date
-    JOIN fail_view_date ON succ_view_date.date = fail_view_date.date
+    SELECT total_view_date.date,
+           cast(100 * cast(failures AS decimal) / cast(total_views AS decimal) AS decimal(16,2)) AS percent_error
+    FROM total_view_date
+    JOIN fail_view_date ON total_view_date.date = fail_view_date.date
     ORDER BY date DESC;
     
 # RESOURCES
